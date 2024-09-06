@@ -1,5 +1,16 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router';
+import { useCountriesStore } from '@/stores/countries';
+
+const store = useCountriesStore();
+
+const loadData = async () => {
+  await store.fetchData('https://restcountries.com/v3.1/all');
+  const { countriesList } = store;
+  console.log(countriesList);
+};
+
+loadData();
 </script>
 
 <template>
