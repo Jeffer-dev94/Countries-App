@@ -1,6 +1,7 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterView } from 'vue-router';
 import { useCountriesStore } from '@/stores/countries';
+import TheHeader from './components/TheHeader.vue';
 
 const store = useCountriesStore();
 
@@ -14,16 +15,13 @@ loadData();
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
+  <div class="flex flex-col bg-white dark:bg-app-blue-800 min-h-screen transition-colors">
+    <TheHeader />
 
-  <RouterView />
+    <main class="container mx-auto">
+      <RouterView />
+    </main>
+  </div>
 </template>
 
 <style scoped>
