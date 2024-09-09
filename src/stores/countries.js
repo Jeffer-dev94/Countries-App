@@ -4,8 +4,10 @@ import { defineStore } from 'pinia';
 export const useCountriesStore = defineStore('countries', () => {
   const countriesList = ref([]);
   const regionList = ref([]);
+  const isFetching = ref(true);
 
   const fetchData = async (url) => {
+    isFetching.value = true;
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -15,6 +17,8 @@ export const useCountriesStore = defineStore('countries', () => {
       setData(data);
     } catch (error) {
       console.error('Error fetching data:', error);
+    } finally {
+      isFetching.value = false;
     }
   };
 
@@ -34,6 +38,7 @@ export const useCountriesStore = defineStore('countries', () => {
   return {
     countriesList,
     regionList,
+    isFetching,
     fetchData,
     setData
   };

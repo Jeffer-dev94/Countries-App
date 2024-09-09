@@ -6,7 +6,7 @@
 
     <div class="px-8 pt-9 pb-14 text-app-blue-900 dark:text-white">
       <h2 class="text-xl font-bold mb-5">{{ name.common }}</h2>
-      <p class="py-1"><strong>Population:</strong> {{ (population.toLocaleString('es-CO')) }}</p>
+      <p class="py-1"><strong>Population:</strong> {{ population.toLocaleString('es-CO') }}</p>
       <p class="py-1"><strong>Region:</strong> {{ region }}</p>
       <p v-if="capital" class="py-1"><strong>Capital:</strong> {{ capital?.join(',') }}</p>
     </div>

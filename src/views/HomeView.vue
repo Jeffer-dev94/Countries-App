@@ -1,5 +1,5 @@
 <script setup>
-import CountryCard from '@/components/CountryCard.vue';
+import CountryCardGrid from '@/components/CountryCardGrid.vue';
 import SearchInput from '@/components/SearchInput.vue';
 import SelectInput from '@/components/SelectInput.vue';
 
@@ -7,12 +7,13 @@ import { useCountriesStore } from '@/stores/countries';
 import { storeToRefs } from 'pinia';
 
 const store = useCountriesStore();
-const { countriesList, regionList } = storeToRefs(store);
+const { regionList } = storeToRefs(store);
 </script>
 
 <template>
-  <section class="flex flex-col gap-10 md:gap-12 py-[30px]">
-    <div class="flex flex-col md:flex-row gap-[50px] md:gap-6 justify-between">
+  <section class="flex flex-col gap-6 md:gap-8 py-[30px]">
+    <div
+      class="flex flex-col md:flex-row gap-[50px] md:gap-6 justify-between py-4 sticky top-0 -mx-2 px-2 bg-app-gray-300 dark:bg-app-blue-800">
       <div class="w-full md:w-3/5 lg:w-[480px]">
         <SearchInput />
       </div>
@@ -20,9 +21,6 @@ const { countriesList, regionList } = storeToRefs(store);
         <SelectInput :items="regionList" placeholder="Filter by Region" />
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-[72px]">
-      <CountryCard v-for="item in countriesList" :key="item.name.common" :name="item.name" :population="item.population"
-        :region="item.region" :capital="item.capital" :flags="item.flags" />
-    </div>
+    <CountryCardGrid />
   </section>
 </template>
