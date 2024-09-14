@@ -13,6 +13,7 @@
 <script setup>
 import CountryCard from '@/components/CountryCard.vue';
 import VPagination from '@/components/VPagination.vue';
+import { useRouterHelper } from '@/shared/composables/useRouterHelper';
 
 import { useCountriesStore } from '@/stores/countries';
 import { storeToRefs } from 'pinia';
@@ -20,10 +21,10 @@ import { ref, watch } from 'vue';
 
 const store = useCountriesStore();
 const { countriesList } = storeToRefs(store);
+const { updateQueryParams } = useRouterHelper();
 
 const contentItems = ref([]);
 const currentContentItems = ref([]);
-// const queryString = ref('');
 const currentPage = ref(1);
 
 watch(countriesList, (newValue) => {
@@ -43,6 +44,7 @@ watch(countriesList, (newValue) => {
 
 const updatePage = (val) => {
   currentPage.value = val;
-  currentContentItems.value = contentItems?.value[currentPage.value - 1];
+  currentContentItems.value = contentItems?.value[val - 1];
+  updateQueryParams({ page: val });
 };
 </script>
