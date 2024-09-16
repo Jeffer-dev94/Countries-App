@@ -1,10 +1,19 @@
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
+import { searchInObjects } from '@/shared/utils';
 
 export const useCountriesStore = defineStore('countries', () => {
-  const countriesList = ref([]);
+  const countriesData = ref([]);
   const regionList = ref([]);
   const isFetching = ref(true);
+  const queryParams = ref({
+    text: '',
+    region: ''
+  });
+
+  function setQueryParams(newParams) {
+    queryParams.value = { ...queryParams.value, ...newParams };
+  }
 
   const fetchData = async (url) => {
     isFetching.value = true;
@@ -23,23 +32,42 @@ export const useCountriesStore = defineStore('countries', () => {
   };
 
   const setData = (newData) => {
-    countriesList.value = newData;
+    countriesData.value = newData;
 
-    const regionsName = newData.map((el) => ({ name: el.region }));
+    const regionsName = newData.map((el) => ({ text: el.region, value: el.region }));
     const uniqueIds = new Set();
     const regions = regionsName.filter((item) => {
-      if (uniqueIds.has(item.name)) return false;
-      uniqueIds.add(item.name);
+      if (uniqueIds.has(item.text)) return false;
+      uniqueIds.add(item.text);
       return true;
     });
-    regionList.value = regions.sort((a, b) => a.name.localeCompare(b.name));
+    const regionSorted = regions.sort((a, b) => a.text.localeCompare(b.text));
+    const allOptions = [{ text: 'All regions', value: null }];
+    regionList.value = [...allOptions, ...regionSorted];
   };
+
+  const countriesList = computed(() => {
+    const region = queryParams.value.region;
+    const text = queryParams.value.text;
+
+    const filteredByRegion = region
+      ? countriesData.value.filter((el) => el.region === region)
+      : countriesData.value;
+
+    const filteredByText = text
+      ? searchInObjects(filteredByRegion, text, ['name.common', 'capital'])
+      : filteredByRegion;
+
+    return filteredByText;
+  });
 
   return {
     countriesList,
     regionList,
+    queryParams,
     isFetching,
     fetchData,
-    setData
+    setData,
+    setQueryParams
   };
 });
