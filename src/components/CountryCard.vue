@@ -1,5 +1,6 @@
 <template>
-  <div class="bg-white dark:bg-app-blue-700 grid rounded-lg overflow-hidden shadow">
+  <RouterLink :to="{ name: 'country', params: { name: name.common } }"
+    class="bg-white dark:bg-app-blue-700 grid rounded-lg overflow-hidden shadow">
     <figure class="w-full h-auto aspect-[264/160] flex">
       <img :src="flags.png" :alt="flags.alt" class="size-full object-cover object-center" />
     </figure>
@@ -10,10 +11,12 @@
       <p class="py-1"><strong>Region:</strong> {{ region }}</p>
       <p v-if="capital" class="py-1"><strong>Capital:</strong> {{ capital?.join(',') }}</p>
     </div>
-  </div>
+  </RouterLink>
 </template>
 
 <script setup>
+import { RouterLink } from 'vue-router';
+
 defineProps({
   name: {
     type: Object,
