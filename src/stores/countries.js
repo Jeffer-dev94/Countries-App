@@ -62,6 +62,7 @@ export const useCountriesStore = defineStore('countries', () => {
   });
 
   return {
+    countriesData,
     countriesList,
     regionList,
     queryParams,

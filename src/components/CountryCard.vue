@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white dark:bg-app-blue-700 grid rounded-lg overflow-hidden shadow">
     <figure class="w-full h-auto aspect-[264/160] flex">
-      <img :src="flags.png" alt="" class="size-full object-cover object-center" />
+      <img :src="flags.png" :alt="flags.alt" class="size-full object-cover object-center" />
     </figure>
 
     <div class="px-8 pt-9 pb-14 text-app-blue-900 dark:text-white">
