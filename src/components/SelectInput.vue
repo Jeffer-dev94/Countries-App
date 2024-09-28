@@ -2,7 +2,7 @@
   <Listbox v-model="selectedOption" @update:modelValue="(value) => emit('update-input', value)">
     <div class="relative w-full">
       <ListboxButton
-        class="relative w-full cursor-default rounded bg-white dark:bg-app-blue-700 py-4 pl-[30px] pr-6 text-app-blue-900 dark:text-white text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
+        class="relative w-full cursor-pointer rounded bg-white dark:bg-app-blue-700 py-4 pl-[30px] pr-6 text-app-blue-900 dark:text-white text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
       >
         <span class="block truncate">{{ selectedOption?.text ?? placeholder }}</span>
         <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-6">
@@ -28,7 +28,7 @@
             <li
               :class="[
                 active ? 'font-bold' : 'font-normal',
-                'relative cursor-default select-none py-2 pl-8 pr-6'
+                'relative cursor-default select-none py-2 pl-8 pr-6 hover:bg-slate-50 dark:hover:bg-app-blue-800 cursor-pointer'
               ]"
             >
               <span :class="[selected ? 'font-medium' : 'font-normal', 'block truncate']">{{

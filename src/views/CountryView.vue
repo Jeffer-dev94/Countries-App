@@ -2,10 +2,12 @@
   <section class="flex flex-col gap-16 md:gap-20 py-[30px]">
     <div class="flex">
       <button
-        class="bg-white text-app-blue-900 dark:bg-app-blue-700 dark:text-white shadow-md px-6 py-1 rounded-sm flex flex-nowrap items-center gap-3"
+        class="bg-white text-app-blue-900 dark:bg-app-blue-700 dark:text-white shadow-md px-6 py-1 rounded-sm flex flex-nowrap items-center gap-3 group"
         @click="goBack"
       >
-        <ArrowLeftIcon class="size-4 text-current" />
+        <ArrowLeftIcon
+          class="size-4 text-current transition-transform duration-500 group-hover:-translate-x-1"
+        />
         <span>Back</span>
       </button>
     </div>
