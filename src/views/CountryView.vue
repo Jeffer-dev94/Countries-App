@@ -1,13 +1,13 @@
 <template>
   <section class="flex flex-col gap-16 md:gap-20 py-[30px]">
     <div class="flex">
-      <a
+      <button
         class="bg-white text-app-blue-900 dark:bg-app-blue-700 dark:text-white shadow-md px-6 py-1 rounded-sm flex flex-nowrap items-center gap-3"
-        href="#"
+        @click="goBack"
       >
         <ArrowLeftIcon class="size-4 text-current" />
-        <span> Back </span>
-      </a>
+        <span>Back</span>
+      </button>
     </div>
 
     <div
@@ -33,7 +33,9 @@
               <strong>Population:</strong> {{ countryData.population.toLocaleString('es-CO') }}
             </li>
             <li><strong>Region:</strong> {{ countryData.region }}</li>
-            <li><strong>Sub region:</strong> {{ countryData.subregion }}</li>
+            <li v-if="countryData.subregion">
+              <strong>Sub region:</strong> {{ countryData.subregion }}
+            </li>
             <li v-if="countryData.capital">
               <strong>Capital:</strong> {{ countryData.capital?.join(',') }}
             </li>
@@ -45,7 +47,7 @@
           </ul>
         </div>
 
-        <div class="flex flex-col lg:flex-row gap-5">
+        <div class="flex flex-col lg:flex-row gap-5" v-if="borderCountries.length > 0">
           <p class="text-lg whitespace-nowrap"><strong>Border Countries</strong>:</p>
           <div class="flex flex-wrap gap-3 items-center">
             <RouterLink
@@ -64,11 +66,15 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-import { RouterLink } from 'vue-router';
+import { onMounted, ref, watch } from 'vue';
+import { RouterLink, useRoute, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { ArrowLeftIcon } from '@heroicons/vue/24/outline';
 import { useCountriesStore } from '@/stores/countries';
+
+const router = useRouter();
+const route = useRoute();
+const countryName = ref(route.params.name);
 
 const store = useCountriesStore();
 const { countriesData } = storeToRefs(store);
@@ -79,10 +85,21 @@ const currencies = ref(null);
 const languages = ref(null);
 const borderCountries = ref(null);
 
-onMounted(() => {
-  countryData.value = countriesData?.value?.find((el) => el.name.common === 'Belgium');
+const goBack = () => {
+  const hasHistory = window?.history?.length > 1;
+
+  if (hasHistory) {
+    const previousPath = window.history.state?.back;
+    previousPath.split('?')?.[0] === '/' ? router.back() : router.push({ path: '/', query: {} });
+  } else {
+    router.push({ path: '/', query: {} });
+  }
+};
+
+const setCountry = () => {
+  countryData.value = countriesData?.value?.find((el) => el.name.common === countryName.value);
   borderCountries.value = countriesData?.value?.filter((el) =>
-    countryData.value.borders.includes(el.cca3)
+    countryData.value.borders?.includes(el.cca3)
   );
 
   const nativeNameKey = Object.keys(countryData.value.name.nativeName)[0];
@@ -92,5 +109,17 @@ onMounted(() => {
   currencies.value = countryData.value.currencies[currenciesKey].name;
 
   languages.value = Object.values(countryData.value.languages).join(', ');
+};
+
+watch(
+  () => route.params.name,
+  (newName) => {
+    countryName.value = newName;
+    setCountry();
+  }
+);
+
+onMounted(() => {
+  setCountry();
 });
 </script>

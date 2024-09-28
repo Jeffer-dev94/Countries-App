@@ -1,6 +1,8 @@
 <template>
-  <RouterLink :to="{ name: 'country', params: { name: name.common } }"
-    class="bg-white dark:bg-app-blue-700 grid rounded-lg overflow-hidden shadow">
+  <RouterLink
+    :to="{ name: 'country', params: { name: name.common } }"
+    class="bg-white dark:bg-app-blue-700 grid rounded-lg overflow-hidden shadow"
+  >
     <figure class="w-full h-auto aspect-[264/160] flex">
       <img :src="flags.png" :alt="flags.alt" class="size-full object-cover object-center" />
     </figure>

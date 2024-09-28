@@ -11,7 +11,6 @@
         :flags="item.flags"
       />
     </div>
-
     <VPagination
       v-if="contentItems.length > 1"
       :current-page="currentPage"
@@ -43,8 +42,10 @@ import { useRouterHelper } from '@/shared/composables/useRouterHelper';
 
 import { useCountriesStore } from '@/stores/countries';
 import { storeToRefs } from 'pinia';
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const store = useCountriesStore();
 const { countriesList } = storeToRefs(store);
 const { updateQueryParams } = useRouterHelper();
@@ -53,23 +54,31 @@ const contentItems = ref([]);
 const currentContentItems = ref([]);
 const currentPage = ref(1);
 
-watch(countriesList, (newValue) => {
+const updateList = (content) => {
   const itemsByPage = 9;
-  const mappedData = newValue?.reduce((result, _value, index) => {
+  const mappedData = content?.reduce((result, _value, index) => {
     if (index % itemsByPage === 0) {
-      result.push(newValue?.slice(index, index + itemsByPage));
+      result.push(content?.slice(index, index + itemsByPage));
     }
     return result;
   }, []);
 
   contentItems.value = mappedData;
   currentContentItems.value = mappedData[currentPage.value - 1];
-  currentPage.value = 1;
-});
+};
 
 const updatePage = (val) => {
   currentPage.value = val;
   currentContentItems.value = contentItems?.value[val - 1];
   updateQueryParams({ page: val });
 };
+
+watch(countriesList, (newValue) => {
+  updateList(newValue);
+});
+
+onMounted(() => {
+  currentPage.value = parseInt(route.query.page) ?? 1;
+  updateList(countriesList.value);
+});
 </script>

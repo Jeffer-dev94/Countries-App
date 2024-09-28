@@ -8,7 +8,8 @@ export const useCountriesStore = defineStore('countries', () => {
   const isFetching = ref(true);
   const queryParams = ref({
     text: '',
-    region: ''
+    region: '',
+    page: 1
   });
 
   function setQueryParams(newParams) {
