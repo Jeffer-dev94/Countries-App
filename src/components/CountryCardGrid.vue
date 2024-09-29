@@ -78,7 +78,7 @@ watch(countriesList, (newValue) => {
 });
 
 onMounted(() => {
-  currentPage.value = parseInt(route.query.page) ?? 1;
+  currentPage.value = parseInt(route.query.page ?? '1');
   updateList(countriesList.value);
 });
 </script>
