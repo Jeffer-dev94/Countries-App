@@ -1,15 +1,20 @@
 <template>
   <div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-[72px]">
-      <CountryCard
-        v-for="item in currentContentItems"
-        :key="item.name.common"
-        :name="item.name"
-        :population="item.population"
-        :region="item.region"
-        :capital="item.capital"
-        :flags="item.flags"
-      />
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-12 lg:gap-16 xl:gap-[72px]">
+      <template v-if="isFetching">
+        <CountryCardSkeleton v-for="item in [1, 2, 3]" :key="item" />
+      </template>
+      <template v-else>
+        <CountryCard
+          v-for="item in currentContentItems"
+          :key="item.name.common"
+          :name="item.name"
+          :population="item.population"
+          :region="item.region"
+          :capital="item.capital"
+          :flags="item.flags"
+        />
+      </template>
     </div>
     <VPagination
       v-if="contentItems.length > 1"
@@ -19,14 +24,8 @@
       :update-page="updatePage"
     />
 
-    <!-- {isLoading && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 my-8">
-          {[1, 2, 3].map(el => (<ArticleSkeleton key={el} />))}
-        </div>
-      )} -->
-
     <div
-      v-if="countriesList.length === 0"
+      v-if="countriesList.length === 0 && !isFetching"
       class="max-w-72 p-4 text-app-blue-900 border border-blue-400 rounded-lg bg-blue-100 dark:bg-gray-800 dark:text-white dark:border-blue-900"
       role="alert"
     >
@@ -37,6 +36,7 @@
 
 <script setup>
 import CountryCard from '@/components/CountryCard.vue';
+import CountryCardSkeleton from '@/components/CountryCardSkeleton.vue';
 import VPagination from '@/components/VPagination.vue';
 import { useRouterHelper } from '@/shared/composables/useRouterHelper';
 
@@ -47,7 +47,7 @@ import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const store = useCountriesStore();
-const { countriesList } = storeToRefs(store);
+const { countriesList, isFetching } = storeToRefs(store);
 const { updateQueryParams } = useRouterHelper();
 
 const contentItems = ref([]);
@@ -55,7 +55,7 @@ const currentContentItems = ref([]);
 const currentPage = ref(1);
 
 const updateList = (content) => {
-  const itemsByPage = 9;
+  const itemsByPage = 12;
   const mappedData = content?.reduce((result, _value, index) => {
     if (index % itemsByPage === 0) {
       result.push(content?.slice(index, index + itemsByPage));

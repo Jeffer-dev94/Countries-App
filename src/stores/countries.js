@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
-import { searchInObjects } from '@/shared/utils';
+import { searchInObjects, sleep } from '@/shared/utils';
 
 export const useCountriesStore = defineStore('countries', () => {
   const countriesData = ref([]);
@@ -24,6 +24,8 @@ export const useCountriesStore = defineStore('countries', () => {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
+      await sleep(800);
+
       setData(data);
     } catch (error) {
       console.error('Error fetching data:', error);

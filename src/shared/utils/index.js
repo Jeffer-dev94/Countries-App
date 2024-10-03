@@ -20,3 +20,5 @@ export const searchInObjects = (array, text, keys) => {
     keys.some((key) => getNestedValue(obj, key)?.includes(normalizedText))
   );
 };
+
+export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
