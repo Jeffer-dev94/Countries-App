@@ -35,9 +35,9 @@ Users should be able to:
 - Toggle the color scheme between light and dark mode *(optional)*
 
 ### Screenshot
-![Home](./public/home-desktop-light.png)
+![Home](./public/screenshots/home-desktop-light.png)
 
-![Country Details](./public/home-desktop-light.png)
+![Country Details](./public/screenshots/home-desktop-light.png)
 
 ### Links
 
