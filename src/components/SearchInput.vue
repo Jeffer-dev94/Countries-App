@@ -1,6 +1,10 @@
 <template>
   <div class="relative flex items-center">
-    <button class="absolute w-[86px] flex justify-center" @click="onchange">
+    <button
+      class="absolute w-[86px] flex justify-center"
+      @click="onchange"
+      aria-label="Search button"
+    >
       <MagnifyingGlassIcon class="size-5 text-app-gray-900 dark:text-white" />
     </button>
 

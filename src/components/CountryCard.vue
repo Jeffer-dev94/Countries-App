@@ -5,7 +5,11 @@
     >
       <div class="flex">
         <figure class="w-full h-auto aspect-[264/160] flex relative overflow-hidden">
-          <img :src="flags.png" :alt="flags.alt" class="size-full object-cover object-center" />
+          <img
+            :src="flags.png"
+            :alt="flags.alt ?? `Flag of ${name.common}`"
+            class="size-full object-cover object-center"
+          />
         </figure>
       </div>
 

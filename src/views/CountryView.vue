@@ -20,7 +20,7 @@
         <figure class="w-full aspect-[560/400]">
           <img
             :src="countryData.flags.png"
-            :alt="countryData.flags.alt"
+            :alt="countryData.flags.alt ?? `Flag of ${name.common}`"
             class="w-full object-center object-cover"
           />
         </figure>
